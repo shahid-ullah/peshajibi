@@ -1,0 +1,7 @@
+pip-tools
+Django
+djangorestframework
+mysqlclient
+whitenoise
+django-environ
+Pillow

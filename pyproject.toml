@@ -1,0 +1,37 @@
+[tool.black]
+line-length = 120
+skip-string-normalization = true
+target-version = ['py36', 'py37', 'py38', 'py39']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # The following are specific to Black, you probably don't want those.
+  | blib2to3
+  | tests/data
+  | profiling
+)/
+'''
+[tool.isort]
+atomic = true
+profile = "black"
+line_length = 120
+skip_gitignore = true
+skip_glob = ["src/blib2to3", "tests/data", "profiling"]
+known_first_party = ["black", "blib2to3", "blackd", "_black_version"]
+[tool.djlint]
+ignore="H014,H015"
+exclude=".venv,venv,.tox,.eggs,..."
+blank_line_after_tag="load,extends,include"
+blank_line_before_tag="load,extends,include"
+profile="django"
+# require_pragma=true
+max_line_length=10000
+indent=2
+max_attribute_length=10000
+use_gitignore=true
+# linter_output_format = "{filename}:{line}: {code} {message} {match}"
+preserve_leading_space=false
+preserve_blank_lines=false
+format_attribute_template_tags=false
+format_js=true
+format_css=true
