@@ -5,6 +5,7 @@ from .models import (
     CityCorporationThanaModel,
     DistrictModel,
     DivisionModel,
+    JobTypeModel,
     OTPModel,
     ProfessionCatModel,
     ProfessionModel,
@@ -21,3 +22,4 @@ admin.site.register(ProfessionCatModel)
 admin.site.register(ProfessionModel)
 admin.site.register(CityCorporationModel)
 admin.site.register(CityCorporationThanaModel)
+admin.site.register(JobTypeModel)

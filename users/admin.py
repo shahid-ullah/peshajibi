@@ -2,7 +2,13 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import AccountChangeForm, AccountCreationForm
-from .models import AccountsModel, DivisionUserProfileModel, GuestUserProfileModel, UserTypeModel
+from .models import (
+    AccountsModel,
+    CityCorporationUserProfileModel,
+    DivisionUserProfileModel,
+    GuestUserProfileModel,
+    UserTypeModel,
+)
 
 
 class AccountsAdmin(UserAdmin):
@@ -34,3 +40,4 @@ admin.site.register(AccountsModel, AccountsAdmin)
 admin.site.register(UserTypeModel)
 admin.site.register(GuestUserProfileModel)
 admin.site.register(DivisionUserProfileModel)
+admin.site.register(CityCorporationUserProfileModel)
