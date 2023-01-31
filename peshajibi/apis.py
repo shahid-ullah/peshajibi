@@ -150,7 +150,7 @@ class CityCorporationThanaListAPI(mixins.ListModelMixin, generics.GenericAPIView
     def get(self, request, *args, **kwargs):
         city_corporation_id = request.GET.get('city_corporation')
         if city_corporation_id:
-            self.queryset = self.queryset.filter(upazila=city_corporation_id)
+            self.queryset = self.queryset.filter(city_corporation=city_corporation_id)
         return self.list(request, *args, **kwargs)
 
 
@@ -171,7 +171,7 @@ class ProfessionListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         profession_cat_id = request.GET.get('profession_cat')
         if profession_cat_id:
-            self.queryset = self.queryset.filter(upazila=profession_cat_id)
+            self.queryset = self.queryset.filter(profession_cat=profession_cat_id)
         return self.list(request, *args, **kwargs)
 
 
