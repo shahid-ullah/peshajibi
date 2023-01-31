@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from rest_framework import generics, mixins, pagination
+from rest_framework import generics, mixins
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAdminUser
@@ -21,27 +21,9 @@ from users.models import AccountsModel, DivisionModel, UserTypeModel
 from users.serializers import AccessOTPSerializer
 
 from . import serializers as peshajibi_serializers
+from .utils import StandardResultsSetPagination
 
 User = get_user_model()
-
-
-class StandardResultsSetPagination(pagination.PageNumberPagination):
-    page_size = 20
-    page_size_query_param = 'page_size'
-    max_page_size = 30
-
-    def get_paginated_response(self, data):
-        return Response(
-            {
-                'links': {
-                    'next': self.get_next_link(),
-                    'previous': self.get_previous_link(),
-                },
-                'count': self.page.paginator.count,
-                'total_pages': self.page.paginator.num_pages,
-                'results': data,
-            }
-        )
 
 
 class VerifyOTPAPI(APIView):
@@ -119,6 +101,10 @@ class DistrictListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
 
     def get(self, request, *args, **kwargs):
+        division_id = request.GET.get('division')
+        if division_id:
+            self.queryset = self.queryset.filter(division=division_id)
+
         return self.list(request, *args, **kwargs)
 
 
@@ -128,15 +114,22 @@ class UpazilaListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
 
     def get(self, request, *args, **kwargs):
+        district_id = request.GET.get('district')
+        if district_id:
+            self.queryset = self.queryset.filter(district=district_id)
         return self.list(request, *args, **kwargs)
 
 
 class UnionListAPI(mixins.ListModelMixin, generics.GenericAPIView):
+    # permission_classes = [IsAdminUser]
     queryset = UnionModel.objects.all()
     serializer_class = peshajibi_serializers.UnionSerializer
     pagination_class = StandardResultsSetPagination
 
     def get(self, request, *args, **kwargs):
+        upazila_id = request.GET.get('upazila')
+        if upazila_id:
+            self.queryset = self.queryset.filter(upazila=upazila_id)
         return self.list(request, *args, **kwargs)
 
 
@@ -155,6 +148,9 @@ class CityCorporationThanaListAPI(mixins.ListModelMixin, generics.GenericAPIView
     pagination_class = StandardResultsSetPagination
 
     def get(self, request, *args, **kwargs):
+        city_corporation_id = request.GET.get('city_corporation')
+        if city_corporation_id:
+            self.queryset = self.queryset.filter(upazila=city_corporation_id)
         return self.list(request, *args, **kwargs)
 
 
@@ -173,6 +169,9 @@ class ProfessionListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
 
     def get(self, request, *args, **kwargs):
+        profession_cat_id = request.GET.get('profession_cat')
+        if profession_cat_id:
+            self.queryset = self.queryset.filter(upazila=profession_cat_id)
         return self.list(request, *args, **kwargs)
 
 

@@ -39,6 +39,7 @@ class DistrictModel(models.Model):
 
     class Meta:
         db_table = "district"
+        ordering = ['id']
 
     def __str__(self):
         return f'{self.name_bng} {self.name_eng}'

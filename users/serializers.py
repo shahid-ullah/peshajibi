@@ -64,3 +64,7 @@ class UpdateDivisionProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = DivisionUserProfileModel
         fields = '__all__'
+
+
+class FavouriteUserIDsSerializer(serializers.Serializer):
+    ids = serializers.CharField(max_length=100)

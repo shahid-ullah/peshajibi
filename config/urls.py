@@ -18,7 +18,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-from users.apis import ProfileUpdateAPI, RegistrationAPI, UserDetailAPI, UserListAPI
+from users.apis import (
+    FavouriteUserAddRemove,
+    FavouriteUserListAPI,
+    ProfileUpdateAPI,
+    RegistrationAPI,
+    UserDetailAPI,
+    UserListAPI,
+)
 
 # from rest_framework.authtoken.views import obtain_auth_token
 
@@ -30,6 +37,8 @@ urlpatterns = [
     path('v1/user/<int:pk>/', UserDetailAPI.as_view(), name='user_detail'),
     path('v1/registration/', RegistrationAPI.as_view(), name='registration'),
     path('v1/update_profile/', ProfileUpdateAPI.as_view(), name='update_profile'),
+    path('v1/favourite_users/', FavouriteUserListAPI.as_view(), name='favourite_users'),
+    path('v1/favourite_user/', FavouriteUserAddRemove.as_view(), name='favourite_user'),
     path('v1/', include('peshajibi.urls')),
 ]
 

@@ -2,14 +2,16 @@ import math
 import random
 
 from django.contrib.auth import get_user_model
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from peshajibi.models import OTPModel
+from peshajibi.utils import StandardResultsSetPagination
 
 from .serializers import (
+    FavouriteUserIDsSerializer,
     RegistrationSerializer,
     UpdateCityProfileSerializer,
     UpdateDivisionProfileSerializer,
@@ -30,6 +32,7 @@ def generate_otp():
 
 
 class UserListAPI(generics.ListCreateAPIView):
+    pagination_class = StandardResultsSetPagination
     # permission_classes = [IsAuthenticated]
     queryset = User.objects.prefetch_related('guest_profile', 'city_profile', 'division_profile')
     serializer_class = UserSerializer
@@ -122,3 +125,34 @@ class ProfileUpdateAPI(APIView):
         else:
             response = {'status': 'failed', 'error': serializer.errors}
             return Response(response)
+
+
+class FavouriteUserListAPI(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    pagination_class = StandardResultsSetPagination
+
+    def get(self, request, *args, **kwargs):
+        self.queryset = self.request.user.favourites.all()
+        return self.list(request, *args, **kwargs)
+
+
+class FavouriteUserAddRemove(APIView):
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+    serializer_class = FavouriteUserIDsSerializer
+
+    def post(self, request, format=None):
+        serializer = FavouriteUserIDsSerializer(data=request.data)
+        if serializer.is_valid():
+            import re
+
+            ids_string = serializer.validated_data['ids']
+            ids_regex = re.compile(r'\d+')
+            ids = ids_regex.findall(ids_string)
+            favourite_users = list(self.queryset.filter(id__in=ids))
+            for user in favourite_users:
+                self.request.user.favourites.remove(user)
+            return Response({'status': 'success'})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
