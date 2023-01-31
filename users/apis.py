@@ -1,5 +1,6 @@
 import math
 import random
+import re
 
 from django.contrib.auth import get_user_model
 from rest_framework import generics, status
@@ -18,6 +19,7 @@ from .serializers import (
     UserSerializer,
 )
 
+ids_regex = re.compile(r'\d+')
 User = get_user_model()
 
 
@@ -146,13 +148,27 @@ class FavouriteUserAddRemove(APIView):
     def post(self, request, format=None):
         serializer = FavouriteUserIDsSerializer(data=request.data)
         if serializer.is_valid():
-            import re
-
             ids_string = serializer.validated_data['ids']
-            ids_regex = re.compile(r'\d+')
+            ids = ids_regex.findall(ids_string)
+            favourite_users = list(self.queryset.filter(id__in=ids))
+            for user in favourite_users:
+                self.request.user.favourites.add(user)
+            return Response({'status': 'success', 'add_ids': ids})
+
+        response = {'status': 'failed', 'errors': serializer.errors}
+
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, format=None):
+        serializer = FavouriteUserIDsSerializer(data=request.data)
+        if serializer.is_valid():
+            ids_string = serializer.validated_data['ids']
             ids = ids_regex.findall(ids_string)
             favourite_users = list(self.queryset.filter(id__in=ids))
             for user in favourite_users:
                 self.request.user.favourites.remove(user)
-            return Response({'status': 'success'})
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'status': 'success', 'removed_ids': ids})
+
+        response = {'status': 'failed', 'errors': serializer.errors}
+
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
