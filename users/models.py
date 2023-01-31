@@ -50,6 +50,7 @@ class AccountsModel(AbstractUser):
         help_text=_("Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."),
     )
     user_type = models.ManyToManyField(UserTypeModel)
+    favourites = models.ManyToManyField('self', symmetrical=False, related_name='followers')
     email = models.EmailField(_('email address'), unique=False, blank=True, null=True)
     mobile = models.CharField(_('mobile number'), max_length=100, unique=True)
     photo = models.ImageField(upload_to='accounts/', blank=True, null=True)
