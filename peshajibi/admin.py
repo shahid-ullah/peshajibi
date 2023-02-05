@@ -1,14 +1,17 @@
 from django.contrib import admin
 
 from .models import (
+    AdsServicesModel,
     CityCorporationModel,
     CityCorporationThanaModel,
     DistrictModel,
     DivisionModel,
+    GenericAdsServiceModel,
     JobTypeModel,
     OTPModel,
     ProfessionCatModel,
     ProfessionModel,
+    TransportAdsService,
     UnionModel,
     UpazilaModel,
 )
@@ -23,3 +26,6 @@ admin.site.register(ProfessionModel)
 admin.site.register(CityCorporationModel)
 admin.site.register(CityCorporationThanaModel)
 admin.site.register(JobTypeModel)
+admin.site.register(AdsServicesModel)
+admin.site.register(GenericAdsServiceModel)
+admin.site.register(TransportAdsService)

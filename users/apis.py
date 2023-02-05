@@ -106,7 +106,7 @@ class ProfileUpdateAPI(APIView):
         # get profile type serializer
         serializer_class = self.profile_type_serializer.get(profile_type)
         if not serializer_class:
-            response = {'status': 'failed', 'error': 'wrong profile type'}
+            response = {'status': 'failed', 'error': 'wrong profile type. choices: division_profile, city_profile'}
             return Response(response)
 
         # get profile instance

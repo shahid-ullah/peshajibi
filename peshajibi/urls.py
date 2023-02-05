@@ -14,4 +14,7 @@ urlpatterns = [
     path('profession_cats/', apis.ProfessionCategoryListAPI.as_view(), name='profession_cat_list'),
     path('professions/', apis.ProfessionListAPI.as_view(), name='profession_list'),
     path('job_types/', apis.JobTypeListAPI.as_view(), name='job_type_list'),
+    path('ads/', apis.AdsListAPI.as_view(), name='ads_list'),
+    path('ads/<int:pk>/', apis.AdsRetrieveDestroyAPI.as_view(), name='ads_update_delete'),
+    path('ads/create/', apis.AdsCreateAPI.as_view(), name='ads_create'),
 ]

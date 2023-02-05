@@ -172,7 +172,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'users.models.BearerAuthentication',
     ],
-    'EXCEPTION_HANDLER': 'users.utils.custom_exception_handler',
+    'EXCEPTION_HANDLER': 'utils.views.custom_exception_handler',
 }
 
 

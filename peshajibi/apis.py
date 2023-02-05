@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, status
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAdminUser
@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from peshajibi.models import (
+    AdsServicesModel,
     CityCorporationModel,
     CityCorporationThanaModel,
     DistrictModel,
@@ -182,3 +183,70 @@ class JobTypeListAPI(mixins.ListModelMixin, generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
+
+class AdsListAPI(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = AdsServicesModel.objects.all()
+    serializer_class = peshajibi_serializers.AdsSerializer
+    pagination_class = StandardResultsSetPagination
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class AdsCreateAPI(generics.CreateAPIView):
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAdminUser]
+
+    ads_service_type_serializer = {
+        'transport': peshajibi_serializers.TransportAdsCreateSerializer,
+        'generic': peshajibi_serializers.GenericAdsSerializer,
+    }
+
+    def post(self, request, format=None):
+        """ """
+        service_type_serializer = peshajibi_serializers.AdsServiceTypeSerializer(data=request.POST)
+        if not service_type_serializer.is_valid():
+            response = {'status': 'failed', 'error': service_type_serializer.errors}
+            return Response(response)
+
+        service_type = service_type_serializer.validated_data['service_type']
+        serializer_class = self.ads_service_type_serializer.get(service_type)
+        if not serializer_class:
+            response = {'status': 'failed', 'error': 'wrong transport type. options: transport, generic'}
+            return Response(response)
+
+        serializer = serializer_class(data=request.POST)
+
+        if serializer.is_valid():
+            # serializer.save()
+            # add logic for adding this object to base ads service object
+            response = {'status': 'success'}
+        else:
+            response = {'status': 'failed', 'error': serializer.errors}
+
+        return Response(response)
+
+
+class AdsRetrieveDestroyAPI(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+    queryset = AdsServicesModel.objects.all()
+    serializer_class = peshajibi_serializers.AdsSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        response = {'status': 'success'}
+        return Response(response, status=status.HTTP_204_NO_CONTENT)
+
+    def perform_destroy(self, instance):
+        try:
+            instance.content_object.delete()
+        except:
+            pass
+        instance.delete()

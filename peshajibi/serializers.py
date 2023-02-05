@@ -61,3 +61,58 @@ class JobTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = peshajibi_models.JobTypeModel
         fields = '__all__'
+
+
+class GenericAdsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = peshajibi_models.GenericAdsServiceModel
+        fields = '__all__'
+
+
+class TransportAdsSerializer(serializers.ModelSerializer):
+    from_division = DivisionSerializer()
+    to_division = DivisionSerializer()
+    from_district = DistrictSerializer()
+    to_district = DistrictSerializer()
+    from_upazila = UpazilaSerializer()
+    to_upazila = UpazilaSerializer()
+
+    class Meta:
+        model = peshajibi_models.TransportAdsService
+        fields = '__all__'
+
+
+class ContentObjectRelatedField(serializers.RelatedField):
+    """
+    A custom field to use for the `content_object` generic relationship.
+    """
+
+    def to_representation(self, value):
+        """
+        Serialize tagged objects to a simple textual representation.
+        """
+        if isinstance(value, peshajibi_models.GenericAdsServiceModel):
+            return GenericAdsSerializer(value).data
+        elif isinstance(value, peshajibi_models.TransportAdsService):
+            return TransportAdsSerializer(value).data
+
+        else:
+            return 'unknown'
+
+
+class AdsSerializer(serializers.ModelSerializer):
+    content_object = ContentObjectRelatedField(read_only=True)
+
+    class Meta:
+        model = peshajibi_models.AdsServicesModel
+        fields = "__all__"
+
+
+class TransportAdsCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = peshajibi_models.TransportAdsService
+        fields = '__all__'
+
+
+class AdsServiceTypeSerializer(serializers.Serializer):
+    service_type = serializers.CharField(max_length=50)
