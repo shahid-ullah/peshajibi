@@ -33,13 +33,13 @@ from users.apis import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('v1/api-token-auth/', obtain_auth_token, name='api_token_auth'),
-    path('v1/users/', UserListAPI.as_view(), name='user_list'),
-    path('v1/user/<int:pk>/', UserDetailAPI.as_view(), name='user_detail'),
-    path('v1/registration/', RegistrationAPI.as_view(), name='registration'),
-    path('v1/update_profile/', ProfileUpdateAPI.as_view(), name='update_profile'),
-    path('v1/favourite_users/', FavouriteUserListAPI.as_view(), name='favourite_users'),
-    path('v1/favourite_user/', FavouriteUserAddRemove.as_view(), name='favourite_user'),
-    path('v1/', include('peshajibi.urls')),
+    path('users/', UserListAPI.as_view(), name='user_list'),
+    path('user/<int:pk>/', UserDetailAPI.as_view(), name='user_detail'),
+    path('registration/', RegistrationAPI.as_view(), name='registration'),
+    path('update_profile/', ProfileUpdateAPI.as_view(), name='update_profile'),
+    path('favourite_users/', FavouriteUserListAPI.as_view(), name='favourite_users'),
+    path('favourite_user/', FavouriteUserAddRemove.as_view(), name='favourite_user'),
+    path('', include('peshajibi.urls')),
 ]
 
 

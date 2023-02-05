@@ -173,6 +173,7 @@ REST_FRAMEWORK = {
         'users.models.BearerAuthentication',
     ],
     'EXCEPTION_HANDLER': 'utils.views.custom_exception_handler',
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning',
 }
 
 
