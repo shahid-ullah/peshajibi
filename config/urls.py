@@ -18,7 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-from users.apis import (
+from apps.users.apis import (
     FavouriteUserAddRemove,
     FavouriteUserListAPI,
     ProfileUpdateAPI,
@@ -39,7 +39,7 @@ urlpatterns = [
     path('update_profile/', ProfileUpdateAPI.as_view(), name='update_profile'),
     path('favourite_users/', FavouriteUserListAPI.as_view(), name='favourite_users'),
     path('favourite_user/', FavouriteUserAddRemove.as_view(), name='favourite_user'),
-    path('', include('peshajibi.urls')),
+    path('', include('apps.peshajibi.urls')),
 ]
 
 
@@ -56,5 +56,5 @@ admin.site.site_header = "Peshajibi admin"
 admin.site.site_title = "Peshajibi admin"
 admin.site.index_title = "Welcome to Peshajibi Admin Panel"
 
-handler404 = 'utils.views.error_404'
-handler500 = 'utils.views.error_500'
+handler404 = 'apps.core.views.error_404'
+handler500 = 'apps.core.views.error_500'

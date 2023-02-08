@@ -48,8 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # local apps
-    'users.apps.UsersConfig',
-    'peshajibi.apps.peshajibiConfig',
+    'apps.users.apps.UsersConfig',
+    'apps.peshajibi.apps.peshajibiConfig',
+    'apps.core.apps.CoreConfig',
     # third party apps
     'debug_toolbar',
     'django_extensions',
@@ -170,9 +171,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'users.models.BearerAuthentication',
+        'apps.users.models.BearerAuthentication',
     ],
-    'EXCEPTION_HANDLER': 'utils.views.custom_exception_handler',
+    'EXCEPTION_HANDLER': 'apps.core.views.custom_exception_handler',
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning',
 }
 

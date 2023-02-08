@@ -8,8 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from peshajibi.models import OTPModel
-from peshajibi.utils import StandardResultsSetPagination
+from apps.core.utils import StandardResultsSetPagination
+from apps.peshajibi.models import OTPModel
 
 from .serializers import (
     FavouriteUserIDsSerializer,

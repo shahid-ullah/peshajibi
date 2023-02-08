@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from peshajibi.models import OTPModel
-from users.models import CityCorporationUserProfileModel, DivisionUserProfileModel, GuestUserProfileModel
+from apps.peshajibi.models import OTPModel
+from apps.users.models import CityCorporationUserProfileModel, DivisionUserProfileModel, GuestUserProfileModel
 
 User = get_user_model()
 

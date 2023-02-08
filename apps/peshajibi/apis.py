@@ -6,7 +6,8 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from peshajibi.models import (
+from apps.core.utils import StandardResultsSetPagination
+from apps.peshajibi.models import (
     AdsServicesModel,
     CityCorporationModel,
     CityCorporationThanaModel,
@@ -18,11 +19,10 @@ from peshajibi.models import (
     UnionModel,
     UpazilaModel,
 )
-from users.models import AccountsModel, DivisionModel, UserTypeModel
-from users.serializers import AccessOTPSerializer
+from apps.users.models import AccountsModel, DivisionModel, UserTypeModel
+from apps.users.serializers import AccessOTPSerializer
 
 from . import serializers as peshajibi_serializers
-from .utils import StandardResultsSetPagination
 
 User = get_user_model()
 

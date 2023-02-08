@@ -5,7 +5,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from rest_framework import authentication
 
-from peshajibi.models import (
+from apps.peshajibi.models import (
     CityCorporationModel,
     CityCorporationThanaModel,
     DistrictModel,
