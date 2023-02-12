@@ -4,4 +4,6 @@ djangorestframework
 mysqlclient
 whitenoise
 django-environ
+django-debug-toolbar
+django-extensions
 Pillow
