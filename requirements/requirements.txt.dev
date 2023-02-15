@@ -6,6 +6,8 @@
 #
 asgiref==3.6.0
     # via django
+astroid==2.14.2
+    # via pylint
 asttokens==2.2.1
     # via stack-data
 backcall==0.2.0
@@ -20,6 +22,8 @@ click==8.1.3
     #   pip-tools
 decorator==5.1.1
     # via ipython
+dill==0.3.6
+    # via pylint
 django==4.1.5
     # via
     #   -r requirements.in.dev
@@ -46,13 +50,19 @@ flake8==6.0.0
 ipython==8.8.0
     # via -r requirements.in.dev
 isort==5.11.4
-    # via -r requirements.in.dev
+    # via
+    #   -r requirements.in.dev
+    #   pylint
 jedi==0.18.2
     # via ipython
+lazy-object-proxy==1.9.0
+    # via astroid
 matplotlib-inline==0.1.6
     # via ipython
 mccabe==0.7.0
-    # via flake8
+    # via
+    #   flake8
+    #   pylint
 mypy-extensions==0.4.3
     # via black
 mysqlclient==2.1.1
@@ -67,12 +77,16 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
+pillow==9.4.0
+    # via -r requirements.in.production
 pip-tools==6.12.1
     # via
     #   -r requirements.in.dev
     #   -r requirements.in.production
 platformdirs==2.6.2
-    # via black
+    # via
+    #   black
+    #   pylint
 prompt-toolkit==3.0.36
     # via ipython
 ptyprocess==0.7.0
@@ -85,6 +99,8 @@ pyflakes==3.0.1
     # via flake8
 pygments==2.14.0
     # via ipython
+pylint==2.16.2
+    # via -r requirements.in.dev
 pyproject-hooks==1.0.0
     # via build
 pytz==2022.7.1
@@ -101,13 +117,19 @@ tomli==2.0.1
     # via
     #   black
     #   build
+    #   pylint
     #   pyproject-hooks
+tomlkit==0.11.6
+    # via pylint
 traitlets==5.8.1
     # via
     #   ipython
     #   matplotlib-inline
 typing-extensions==4.4.0
-    # via black
+    # via
+    #   astroid
+    #   black
+    #   pylint
 wcwidth==0.2.6
     # via prompt-toolkit
 wheel==0.38.4
@@ -116,6 +138,8 @@ whitenoise==6.3.0
     # via
     #   -r requirements.in.dev
     #   -r requirements.in.production
+wrapt==1.14.1
+    # via astroid
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
