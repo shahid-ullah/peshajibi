@@ -5,3 +5,4 @@ mysqlclient
 whitenoise
 django-environ
 Pillow
+drf-extra-fields

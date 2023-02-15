@@ -49,9 +49,16 @@ class VerifyOTPAPI(APIView):
             user.user_type.add(user_type)
             token = Token.objects.get_or_create(user=user)[0].key
             user_serializer = UserSerializer(user)
+            user_info = user_serializer.data
+            try:
+                photo_url = request.build_absolute_uri(request.user.photo.url)
+                user_info['photo'] = photo_url
+            except ValueError:
+                pass
+
             response = {
                 'status': 'Valid',
-                'user_info': user_serializer.data,
+                'user_info': user_info,
                 'token': token,
             }
         else:
