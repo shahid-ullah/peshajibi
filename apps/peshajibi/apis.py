@@ -53,7 +53,7 @@ class VerifyOTPAPI(APIView):
             try:
                 photo_url = request.build_absolute_uri(request.user.photo.url)
                 user_info['photo'] = photo_url
-            except ValueError:
+            except:
                 pass
 
             response = {
