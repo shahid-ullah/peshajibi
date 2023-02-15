@@ -2,7 +2,12 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from apps.peshajibi.models import OTPModel
-from apps.users.models import CityCorporationUserProfileModel, DivisionUserProfileModel, GuestUserProfileModel
+from apps.users.models import (
+    AccountsModel,
+    CityCorporationUserProfileModel,
+    DivisionUserProfileModel,
+    GuestUserProfileModel,
+)
 
 User = get_user_model()
 
@@ -47,6 +52,9 @@ class UserSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'mobile',
+            'username',
+            'username_eng',
+            'username_bng',
             'photo',
             'guest_profile',
             'city_profile',
@@ -68,3 +76,14 @@ class UpdateDivisionProfileSerializer(serializers.ModelSerializer):
 
 class FavouriteUserIDsSerializer(serializers.Serializer):
     ids = serializers.CharField(max_length=100)
+
+
+class AccountUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AccountsModel
+        fields = [
+            'username',
+            'email',
+            'username_eng',
+            'username_bng',
+        ]

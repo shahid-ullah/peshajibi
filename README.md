@@ -31,7 +31,7 @@
   ```
 - **Start development server**
   ```bash
-    $ python manager.py runserver
+    $ python manage.py runserver
   ```
 
 ### Additional Instructions
@@ -42,9 +42,9 @@
   SECRET_KEY=''
   DEBUG=False
   DEFAULT_DATABASE=''
-  DB_NAME=''
-  DB_USER=''
-  DB_PASSWORD=''
-  DB_HOST=''
-  DB_PORT=''
+  MYSQL_DB_NAME=''
+  MYSQL_DB_USER=''
+  MYSQL_DB_PASSWORD=''
+  MYSQL_DB_HOST=''
+  MYSQL_DB_PORT=''
 ```

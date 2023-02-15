@@ -1,3 +1,4 @@
+import copy
 import math
 import random
 import re
@@ -12,6 +13,7 @@ from apps.core.utils import StandardResultsSetPagination
 from apps.peshajibi.models import OTPModel
 
 from .serializers import (
+    AccountUpdateSerializer,
     FavouriteUserIDsSerializer,
     RegistrationSerializer,
     UpdateCityProfileSerializer,
@@ -78,55 +80,39 @@ class RegistrationAPI(APIView):
 
 class ProfileUpdateAPI(APIView):
     permission_classes = [IsAuthenticated]
-    profile_type_serializer = {
-        'division_profile': UpdateDivisionProfileSerializer,
-        'city_profile': UpdateCityProfileSerializer,
-    }
 
     def post(self, request, format=None):
         """
         update user profile.
         """
+        division_profile = getattr(request.user, 'division_profile', None)
+        data = copy.deepcopy(request.POST)
+        data['user'] = request.user.id
 
-        user_id = request.POST.get('user')
-
-        # check profile type
-        try:
-            profile_type = request.POST['profile_type']
-        except KeyError:
-            response = {'status': 'failed', 'error': 'profile_type missing'}
-            return Response(response)
-        # check user account
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            response = {'status': 'failed', 'error': 'user account not found'}
-            return Response(response)
-
-        # get profile type serializer
-        serializer_class = self.profile_type_serializer.get(profile_type)
-        if not serializer_class:
-            response = {'status': 'failed', 'error': 'wrong profile type. choices: division_profile, city_profile'}
-            return Response(response)
-
-        # get profile instance
-        try:
-            profile_instance = getattr(user, profile_type)
-        except:
-            profile_instance = None
-
-        if profile_instance is not None:
-            serializer = serializer_class(profile_instance, data=request.POST)
+        if division_profile is not None:
+            division_profile_serializer = UpdateDivisionProfileSerializer(division_profile, data=data)
         else:
-            serializer = serializer_class(None, data=request.POST)
+            division_profile_serializer = UpdateDivisionProfileSerializer(data=data)
+        if division_profile_serializer.is_valid():
+            division_profile_serializer.save()
 
-        if serializer.is_valid():
-            serializer.save()
-            response = {'status': 'success', 'data': serializer.data}
-            return Response(response)
+        city_profile = getattr(request.user, 'city_profile', None)
+
+        if city_profile is not None:
+            city_profile_serializer = UpdateCityProfileSerializer(city_profile, data=data)
         else:
-            response = {'status': 'failed', 'error': serializer.errors}
-            return Response(response)
+            city_profile_serializer = UpdateCityProfileSerializer(data=data)
+
+        if city_profile_serializer.is_valid():
+            city_profile_serializer.save()
+
+        account_serializer = AccountUpdateSerializer(request.user, data=data)
+        if account_serializer.is_valid():
+            account_serializer.save()
+
+        user_serializer = UserSerializer(request.user)
+        response = {'status': 'success', 'user_info': user_serializer.data}
+        return Response(response)
 
 
 class FavouriteUserListAPI(generics.ListAPIView):

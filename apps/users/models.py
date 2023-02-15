@@ -49,6 +49,10 @@ class AccountsModel(AbstractUser):
         null=True,
         help_text=_("Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."),
     )
+    username_eng = models.CharField(max_length=100, blank=True, null=True)
+    username_bng = models.CharField(max_length=100, blank=True, null=True)
+    is_donate_blood = models.BooleanField(default=False)
+    share_profile = models.BooleanField(default=True)
     user_type = models.ManyToManyField(UserTypeModel)
     favourites = models.ManyToManyField('self', symmetrical=False, related_name='followers')
     email = models.EmailField(_('email address'), unique=False, blank=True, null=True)
@@ -89,16 +93,18 @@ class GuestUserProfileModel(models.Model):
 
 class CityCorporationUserProfileModel(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='city_profile')
-    profession = models.ForeignKey(ProfessionModel, on_delete=models.CASCADE)
-    present_city = models.ForeignKey(CityCorporationModel, on_delete=models.CASCADE, related_name='current_city_users')
+    profession = models.ForeignKey(ProfessionModel, on_delete=models.CASCADE, blank=True, null=True)
+    present_city = models.ForeignKey(
+        CityCorporationModel, on_delete=models.CASCADE, related_name='current_city_users', blank=True, null=True
+    )
     permanent_city = models.ForeignKey(
-        CityCorporationModel, on_delete=models.CASCADE, related_name='permanent_city_users'
+        CityCorporationModel, on_delete=models.CASCADE, related_name='permanent_city_users', blank=True, null=True
     )
     present_thana = models.ForeignKey(
-        CityCorporationThanaModel, on_delete=models.CASCADE, related_name='current_thana_users'
+        CityCorporationThanaModel, on_delete=models.CASCADE, related_name='current_thana_users', blank=True, null=True
     )
     permanent_thana = models.ForeignKey(
-        CityCorporationThanaModel, on_delete=models.CASCADE, related_name='permanent_thana_users'
+        CityCorporationThanaModel, on_delete=models.CASCADE, related_name='permanent_thana_users', blank=True, null=True
     )
     present_sector = models.CharField(max_length=100, blank=True, null=True)
     permanent_sector = models.CharField(max_length=100, blank=True, null=True)
@@ -121,21 +127,31 @@ class CityCorporationUserProfileModel(models.Model):
 
 class DivisionUserProfileModel(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='division_profile')
-    profession = models.ForeignKey(ProfessionModel, on_delete=models.CASCADE)
-    present_division = models.ForeignKey(DivisionModel, on_delete=models.CASCADE, related_name='current_division_users')
+    profession = models.ForeignKey(ProfessionModel, on_delete=models.CASCADE, null=True, blank=True)
+    present_division = models.ForeignKey(
+        DivisionModel, on_delete=models.CASCADE, related_name='current_division_users', null=True, blank=True
+    )
     permanent_division = models.ForeignKey(
-        DivisionModel, on_delete=models.CASCADE, related_name='permanent_division_users'
+        DivisionModel, on_delete=models.CASCADE, related_name='permanent_division_users', null=True, blank=True
     )
-    present_district = models.ForeignKey(DistrictModel, on_delete=models.CASCADE, related_name='current_district_users')
+    present_district = models.ForeignKey(
+        DistrictModel, on_delete=models.CASCADE, related_name='current_district_users', blank=True, null=True
+    )
     permanent_district = models.ForeignKey(
-        DistrictModel, on_delete=models.CASCADE, related_name='permanent_district_users'
+        DistrictModel, on_delete=models.CASCADE, related_name='permanent_district_users', blank=True, null=True
     )
-    present_upazila = models.ForeignKey(UpazilaModel, on_delete=models.CASCADE, related_name='current_upazila_users')
+    present_upazila = models.ForeignKey(
+        UpazilaModel, on_delete=models.CASCADE, related_name='current_upazila_users', blank=True, null=True
+    )
     permanent_upazila = models.ForeignKey(
-        UpazilaModel, on_delete=models.CASCADE, related_name='permanent_upazila_users'
+        UpazilaModel, on_delete=models.CASCADE, related_name='permanent_upazila_users', blank=True, null=True
     )
-    present_union = models.ForeignKey(UnionModel, on_delete=models.CASCADE, related_name='current_union_users')
-    permanent_union = models.ForeignKey(UnionModel, on_delete=models.CASCADE, related_name='permanent_union_users')
+    present_union = models.ForeignKey(
+        UnionModel, on_delete=models.CASCADE, related_name='current_union_users', blank=True, null=True
+    )
+    permanent_union = models.ForeignKey(
+        UnionModel, on_delete=models.CASCADE, related_name='permanent_union_users', blank=True, null=True
+    )
     present_ward = models.CharField(max_length=100, blank=True, null=True)
     permanent_ward = models.CharField(max_length=100, blank=True, null=True)
     present_house_no = models.CharField(max_length=100, blank=True, null=True)

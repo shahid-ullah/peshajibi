@@ -20,7 +20,7 @@ from apps.peshajibi.models import (
     UpazilaModel,
 )
 from apps.users.models import AccountsModel, DivisionModel, UserTypeModel
-from apps.users.serializers import AccessOTPSerializer
+from apps.users.serializers import AccessOTPSerializer, UserSerializer
 
 from . import serializers as peshajibi_serializers
 
@@ -46,15 +46,12 @@ class VerifyOTPAPI(APIView):
         if otp_objects.exists():
             user_type = UserTypeModel.objects.get_or_create(id=2)[0]
             user = AccountsModel.objects.get_or_create(mobile=mobile_number)[0]
-            # breakpoint()
             user.user_type.add(user_type)
             token = Token.objects.get_or_create(user=user)[0].key
+            user_serializer = UserSerializer(user)
             response = {
                 'status': 'Valid',
-                'user_info': {
-                    'id': user.id,
-                    'mobile': user.mobile,
-                },
+                'user_info': user_serializer.data,
                 'token': token,
             }
         else:
