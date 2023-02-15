@@ -52,7 +52,7 @@ class AccountsModel(AbstractUser):
     username_eng = models.CharField(max_length=100, blank=True, null=True)
     username_bng = models.CharField(max_length=100, blank=True, null=True)
     is_donate_blood = models.BooleanField(default=False)
-    share_profile = models.BooleanField(default=True)
+    is_share_profile = models.BooleanField(default=True)
     user_type = models.ManyToManyField(UserTypeModel)
     favourites = models.ManyToManyField('self', symmetrical=False, related_name='followers')
     email = models.EmailField(_('email address'), unique=False, blank=True, null=True)

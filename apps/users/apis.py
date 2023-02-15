@@ -111,7 +111,13 @@ class ProfileUpdateAPI(APIView):
             account_serializer.save()
 
         user_serializer = UserSerializer(request.user)
-        response = {'status': 'success', 'user_info': user_serializer.data}
+        user_info = user_serializer.data
+        try:
+            photo_url = request.build_absolute_uri(request.user.photo.url)
+            user_info['photo'] = photo_url
+        except ValueError:
+            pass
+        response = {'status': 'success', 'user_info': user_info}
         return Response(response)
 
 
