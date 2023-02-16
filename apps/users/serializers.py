@@ -91,6 +91,7 @@ class UserSerializer(serializers.ModelSerializer):
             'photo',
             'is_donate_blood',
             'is_share_profile',
+            'blood_group_eng',
             'guest_profile',
             'city_profile',
             'division_profile',
