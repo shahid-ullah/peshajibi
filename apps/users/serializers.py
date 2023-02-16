@@ -126,4 +126,5 @@ class AccountUpdateSerializer(serializers.ModelSerializer):
             'username_bng',
             'is_donate_blood',
             'is_share_profile',
+            'blood_group_eng',
         ]

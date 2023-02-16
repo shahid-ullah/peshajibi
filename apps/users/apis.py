@@ -95,6 +95,9 @@ class ProfileUpdateAPI(APIView):
             division_profile_serializer = UpdateDivisionProfileSerializer(data=data)
         if division_profile_serializer.is_valid():
             division_profile_serializer.save()
+            division_errors = {}
+        else:
+            division_errors = division_profile_serializer.errors
 
         city_profile = getattr(request.user, 'city_profile', None)
 
@@ -105,10 +108,16 @@ class ProfileUpdateAPI(APIView):
 
         if city_profile_serializer.is_valid():
             city_profile_serializer.save()
+            city_errors = {}
+        else:
+            city_errors = city_profile_serializer.errors
 
         account_serializer = AccountUpdateSerializer(request.user, data=data)
         if account_serializer.is_valid():
             account_serializer.save()
+            account_errors = {}
+        else:
+            account_errors = account_serializer.errors
 
         user_serializer = UserSerializer(request.user)
         user_info = user_serializer.data
@@ -117,7 +126,15 @@ class ProfileUpdateAPI(APIView):
             user_info['photo'] = photo_url
         except:
             pass
-        response = {'status': 'success', 'user_info': user_info}
+        response = {
+            'status': 'success',
+            'user_info': user_info,
+            'errors': [
+                {'account_errors': account_errors},
+                {'division_errors': division_errors},
+                {'city_errors': city_errors},
+            ],
+        }
         return Response(response)
 
 
