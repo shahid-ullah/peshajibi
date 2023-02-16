@@ -14,11 +14,14 @@ django==4.1.5
     # via
     #   -r requirements.in.production
     #   django-debug-toolbar
+    #   django-extensions
     #   djangorestframework
     #   drf-extra-fields
 django-debug-toolbar==3.8.1
     # via -r requirements.in.production
 django-environ==0.9.0
+    # via -r requirements.in.production
+django-extensions==3.2.1
     # via -r requirements.in.production
 djangorestframework==3.14.0
     # via
