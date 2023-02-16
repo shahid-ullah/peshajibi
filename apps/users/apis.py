@@ -85,10 +85,10 @@ class ProfileUpdateAPI(APIView):
         """
         update user profile.
         """
-        division_profile = getattr(request.user, 'division_profile', None)
         data = copy.deepcopy(request.POST)
         data['user'] = request.user.id
 
+        division_profile = getattr(request.user, 'division_profile', None)
         if division_profile is not None:
             division_profile_serializer = UpdateDivisionProfileSerializer(division_profile, data=data)
         else:
@@ -115,7 +115,7 @@ class ProfileUpdateAPI(APIView):
         try:
             photo_url = request.build_absolute_uri(request.user.photo.url)
             user_info['photo'] = photo_url
-        except ValueError:
+        except:
             pass
         response = {'status': 'success', 'user_info': user_info}
         return Response(response)

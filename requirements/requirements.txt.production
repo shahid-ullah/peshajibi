@@ -13,8 +13,11 @@ click==8.1.3
 django==4.1.5
     # via
     #   -r requirements.in.production
+    #   django-debug-toolbar
     #   djangorestframework
     #   drf-extra-fields
+django-debug-toolbar==3.8.1
+    # via -r requirements.in.production
 django-environ==0.9.0
     # via -r requirements.in.production
 djangorestframework==3.14.0
@@ -36,7 +39,9 @@ pyproject-hooks==1.0.0
 pytz==2022.7.1
     # via djangorestframework
 sqlparse==0.4.3
-    # via django
+    # via
+    #   django
+    #   django-debug-toolbar
 tomli==2.0.1
     # via build
 wheel==0.38.4

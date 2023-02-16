@@ -6,3 +6,4 @@ whitenoise
 django-environ
 Pillow
 drf-extra-fields
+django-debug-toolbar
