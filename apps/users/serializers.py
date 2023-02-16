@@ -11,6 +11,13 @@ from apps.peshajibi.serializers import (
     ProfessionSerializer,
     UnionSerializer,
     UpazilaSerializer,
+    UpdateProfileCityCorporationSerializer,
+    UpdateProfileCityCorporationThanaSerializer,
+    UpdateProfileDistrictSerializer,
+    UpdateProfileDivisionSerializer,
+    UpdateProfileProfessionSerializer,
+    UpdateProfileUnionSerializer,
+    UpdateProfileUpazilaSerializer,
 )
 from apps.users.models import (
     AccountsModel,
@@ -41,11 +48,11 @@ class GuestProfileSerializer(serializers.ModelSerializer):
 
 
 class CityProfileSerializer(serializers.ModelSerializer):
-    profession = ProfessionSerializer()
-    present_city = CityCorporationSerializer()
-    permanent_city = CityCorporationSerializer()
-    present_thana = CityCorporationThanaSerializer()
-    permanent_thana = CityCorporationThanaSerializer()
+    profession = UpdateProfileProfessionSerializer()
+    present_city = UpdateProfileCityCorporationSerializer()
+    permanent_city = UpdateProfileCityCorporationSerializer()
+    present_thana = UpdateProfileCityCorporationThanaSerializer()
+    permanent_thana = UpdateProfileCityCorporationThanaSerializer()
 
     class Meta:
         model = CityCorporationUserProfileModel
@@ -53,15 +60,15 @@ class CityProfileSerializer(serializers.ModelSerializer):
 
 
 class DivisionProfileSerializer(serializers.ModelSerializer):
-    profession = ProfessionSerializer()
-    present_division = DivisionSerializer()
-    permanent_division = DivisionSerializer()
-    present_district = DistrictSerializer()
-    permanent_district = DistrictSerializer()
-    present_upazila = UpazilaSerializer()
-    permanent_upazila = UpazilaSerializer()
-    present_union = UnionSerializer()
-    permanent_union = UnionSerializer()
+    profession = UpdateProfileProfessionSerializer()
+    present_division = UpdateProfileDivisionSerializer()
+    permanent_division = UpdateProfileDivisionSerializer()
+    present_district = UpdateProfileDistrictSerializer()
+    permanent_district = UpdateProfileDistrictSerializer()
+    present_upazila = UpdateProfileUpazilaSerializer()
+    permanent_upazila = UpdateProfileUpazilaSerializer()
+    present_union = UpdateProfileUnionSerializer()
+    permanent_union = UpdateProfileUnionSerializer()
 
     class Meta:
         model = DivisionUserProfileModel

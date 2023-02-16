@@ -116,3 +116,51 @@ class TransportAdsCreateSerializer(serializers.ModelSerializer):
 
 class AdsServiceTypeSerializer(serializers.Serializer):
     service_type = serializers.CharField(max_length=50)
+
+
+# Start update profile API serializers
+
+
+class UpdateProfileProfessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = peshajibi_models.ProfessionModel
+        fields = ['id', 'name_bng', 'name_eng']
+
+
+class UpdateProfileDivisionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = peshajibi_models.DivisionModel
+        fields = ['id', 'name_bng', 'name_eng']
+
+
+class UpdateProfileDistrictSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = peshajibi_models.DistrictModel
+        fields = ['id', 'name_bng', 'name_eng']
+
+
+class UpdateProfileUpazilaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = peshajibi_models.UpazilaModel
+        fields = ['id', 'name_bng', 'name_eng']
+
+
+class UpdateProfileUnionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = peshajibi_models.UnionModel
+        fields = ['id', 'name_bng', 'name_eng']
+
+
+class UpdateProfileCityCorporationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = peshajibi_models.CityCorporationModel
+        fields = ['id', 'name_bng', 'name_eng']
+
+
+class UpdateProfileCityCorporationThanaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = peshajibi_models.CityCorporationThanaModel
+        fields = ['id', 'name_bng', 'name_eng']
+
+
+# End update profile serializers
