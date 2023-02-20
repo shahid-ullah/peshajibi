@@ -4,6 +4,7 @@ import random
 import re
 
 from django.contrib.auth import get_user_model
+from django.db.models.query import QuerySet
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -35,11 +36,30 @@ def generate_otp():
     return random_str
 
 
-class UserListAPI(generics.ListCreateAPIView):
+class UserListAPI(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
     # permission_classes = [IsAuthenticated]
     queryset = User.objects.prefetch_related('guest_profile', 'city_profile', 'division_profile')
     serializer_class = UserSerializer
+
+    def get_queryset(self):
+        assert self.queryset is not None, (
+            "'%s' should either include a `queryset` attribute, "
+            "or override the `get_queryset()` method." % self.__class__.__name__
+        )
+
+        queryset = self.queryset
+        profession_id = self.request.GET.get('profession')
+        try:
+            if profession_id:
+                queryset = queryset.filter(division_profile__profession__id=profession_id)
+        except:
+            pass
+        queryset = queryset.filter()
+        if isinstance(queryset, QuerySet):
+            # Ensure queryset is re-evaluated on each request.
+            queryset = queryset.all()
+        return queryset
 
 
 class UserDetailAPI(generics.RetrieveAPIView):
