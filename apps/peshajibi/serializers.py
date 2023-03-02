@@ -163,4 +163,10 @@ class UpdateProfileCityCorporationThanaSerializer(serializers.ModelSerializer):
         fields = ['id', 'name_bng', 'name_eng']
 
 
+class AdsServicesScehmaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = peshajibi_models.AdsServiceTypeSchemaModel
+        fields = "__all__"
+
+
 # End update profile serializers

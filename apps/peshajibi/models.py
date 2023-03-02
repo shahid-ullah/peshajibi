@@ -4,6 +4,10 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 
+def EMPTY_DICTIONARY():
+    return {}
+
+
 class OTPModel(models.Model):
     mobile_number = models.CharField(max_length=20, db_index=True)
     user_type = models.CharField(max_length=50, blank=True, null=True)
@@ -200,3 +204,20 @@ class GenericAdsServiceModel(models.Model):
     class Meta:
         db_table = 'generic_ads_services'
         ordering = ['-id']
+
+
+class AdsServiceTypeSchemaModel(models.Model):
+    service_id = models.PositiveIntegerField(db_index=True)
+    key = models.CharField(max_length=50)
+    level = models.CharField(max_length=100)
+    type = models.CharField(max_length=100)
+    value = models.JSONField(default=EMPTY_DICTIONARY, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
+
+    def __str__(self):
+        return f'service_id: {self.service_id}  key: {self.key}'
+
+    class Meta:
+        db_table = 'ads_service_type_schema'
+        ordering = ['id']

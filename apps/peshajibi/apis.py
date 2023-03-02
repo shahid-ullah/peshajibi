@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.db.models.query import QuerySet
 from rest_framework import generics, mixins, status
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.authtoken.models import Token
@@ -9,6 +10,7 @@ from rest_framework.views import APIView
 from apps.core.utils import StandardResultsSetPagination
 from apps.peshajibi.models import (
     AdsServicesModel,
+    AdsServiceTypeSchemaModel,
     CityCorporationModel,
     CityCorporationThanaModel,
     DistrictModel,
@@ -254,3 +256,29 @@ class AdsRetrieveDestroyAPI(mixins.RetrieveModelMixin, mixins.DestroyModelMixin,
         except:
             pass
         instance.delete()
+
+
+class AdsServiceSchemaListAPI(generics.ListAPIView):
+    pagination_class = StandardResultsSetPagination
+    # permission_classes = [IsAuthenticated]
+    queryset = AdsServiceTypeSchemaModel.objects.all()
+    serializer_class = peshajibi_serializers.AdsServicesScehmaSerializer
+
+    def get_queryset(self):
+        assert self.queryset is not None, (
+            "'%s' should either include a `queryset` attribute, "
+            "or override the `get_queryset()` method." % self.__class__.__name__
+        )
+
+        queryset = self.queryset
+        service_id = self.request.GET.get('service_id')
+        try:
+            if service_id:
+                queryset = queryset.filter(service_id=service_id)
+        except:
+            pass
+        queryset = queryset.filter()
+        if isinstance(queryset, QuerySet):
+            # Ensure queryset is re-evaluated on each request.
+            queryset = queryset.all()
+        return queryset
