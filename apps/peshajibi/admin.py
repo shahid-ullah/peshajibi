@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import (  # AdsServicesModel,; GenericAdsServiceModel,; JobTypeModel,; TransportAdsService,
+    Ads,
     AdsServiceTypeSchemaModel,
     CityCorporationModel,
     CityCorporationThanaModel,
@@ -27,3 +28,4 @@ admin.site.register(CityCorporationThanaModel)
 # admin.site.register(GenericAdsServiceModel)
 # admin.site.register(TransportAdsService)
 admin.site.register(AdsServiceTypeSchemaModel)
+admin.site.register(Ads)

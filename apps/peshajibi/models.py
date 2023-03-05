@@ -1,6 +1,7 @@
 from django.conf import settings
-from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
-from django.contrib.contenttypes.models import ContentType
+
+# from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+# from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 
@@ -221,3 +222,58 @@ class AdsServiceTypeSchemaModel(models.Model):
     class Meta:
         db_table = 'ads_service_type_schema'
         ordering = ['id']
+
+
+class Ads(models.Model):
+
+    SERVICE_CHOICES = (
+        ('offer_service', 'সেবা দিতে চাই'),
+        ('take_service', 'সেবা নিতে চাই'),
+    )
+    SERVICE_MEDIUM_OR_ITEM_CHOICES = (
+        ('fridge', 'ফ্রিজ'),
+        ('mobile', 'মোবাইল'),
+        ('microbus', 'মাইক্রোবাস'),
+        ('motorcycle', 'মোটর সাইকেল'),
+    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='my_ads')
+    profession = models.ForeignKey(ProfessionModel, on_delete=models.CASCADE, related_name='ads')
+    ads_type = models.ForeignKey(ProfessionCatModel, on_delete=models.CASCADE, related_name='ads')
+    service_type = models.CharField(choices=SERVICE_CHOICES, max_length=100)
+    from_division = models.ForeignKey(
+        DivisionModel, related_name='from_division_transports', on_delete=models.CASCADE, blank=True, null=True
+    )
+    to_division = models.ForeignKey(
+        DivisionModel, related_name='to_division_transports', on_delete=models.CASCADE, blank=True, null=True
+    )
+    from_district = models.ForeignKey(
+        DistrictModel, related_name='from_district_transports', on_delete=models.CASCADE, blank=True, null=True
+    )
+    to_district = models.ForeignKey(
+        DistrictModel, related_name='to_district_transports', on_delete=models.CASCADE, blank=True, null=True
+    )
+    from_upazila = models.ForeignKey(
+        UpazilaModel, related_name='from_upazila_transports', on_delete=models.CASCADE, blank=True, null=True
+    )
+    to_upazila = models.ForeignKey(
+        UpazilaModel, related_name='to_upazila_transports', on_delete=models.CASCADE, blank=True, null=True
+    )
+    service_medium_or_item = models.CharField(
+        choices=SERVICE_MEDIUM_OR_ITEM_CHOICES, max_length=100, blank=True, null=True
+    )
+    product_name = models.CharField(max_length=100, db_index=True, blank=True, null=True)
+    product_weight = models.CharField(max_length=100, blank=True, null=True)
+    is_negotiable = models.BooleanField(default=False)
+    notice_period_days = models.CharField(max_length=2, blank=True, null=True)
+    expire_date = models.DateField(blank=True, null=True)
+    cost = models.DecimalField(default=0, decimal_places=2, max_digits=50)
+    description = models.TextField(blank=True, null=True)
+    job_created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    job_updated_at = models.DateTimeField(auto_now=True, editable=False)
+
+    class Meta:
+        db_table = 'ads'
+        ordering = ['-id']
+
+    def __str__(self):
+        return f'{self.service_type}'
