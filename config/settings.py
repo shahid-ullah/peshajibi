@@ -33,9 +33,8 @@ SECRET_KEY = 'django-insecure-+5k)u=4f9_^-3l^q7g8^!gv9u*5i68vyu@t3y(fw7r*$5#5=ei
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'peshajibi.tappware.com']
+DEBUG = True
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'https://peshajibi.tappware.com']
 
 
 # Application definition
