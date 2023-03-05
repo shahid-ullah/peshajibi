@@ -13,9 +13,9 @@ urlpatterns = [
     path('city_corporation_thanas/', apis.CityCorporationThanaListAPI.as_view(), name='city_corporation_thana_list'),
     path('profession_cats/', apis.ProfessionCategoryListAPI.as_view(), name='profession_cat_list'),
     path('professions/', apis.ProfessionListAPI.as_view(), name='profession_list'),
-    path('job_types/', apis.JobTypeListAPI.as_view(), name='job_type_list'),
-    path('ads/', apis.AdsListAPI.as_view(), name='ads_list'),
-    path('ads/<int:pk>/', apis.AdsRetrieveDestroyAPI.as_view(), name='ads_update_delete'),
-    path('ads/create/', apis.AdsCreateAPI.as_view(), name='ads_create'),
+    # path('job_types/', apis.JobTypeListAPI.as_view(), name='job_type_list'),
+    # path('ads/', apis.AdsListAPI.as_view(), name='ads_list'),
+    # path('ads/<int:pk>/', apis.AdsRetrieveDestroyAPI.as_view(), name='ads_update_delete'),
+    # path('ads/create/', apis.AdsCreateAPI.as_view(), name='ads_create'),
     path('ads_service_schemas/', apis.AdsServiceSchemaListAPI.as_view(), name='ads_service_schemas'),
 ]

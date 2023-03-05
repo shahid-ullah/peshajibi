@@ -8,13 +8,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.core.utils import StandardResultsSetPagination
-from apps.peshajibi.models import (
-    AdsServicesModel,
+from apps.peshajibi.models import (  # AdsServicesModel,; JobTypeModel,
     AdsServiceTypeSchemaModel,
     CityCorporationModel,
     CityCorporationThanaModel,
     DistrictModel,
-    JobTypeModel,
     OTPModel,
     ProfessionCatModel,
     ProfessionModel,
@@ -182,80 +180,80 @@ class ProfessionListAPI(mixins.ListModelMixin, generics.GenericAPIView):
         return self.list(request, *args, **kwargs)
 
 
-class JobTypeListAPI(mixins.ListModelMixin, generics.GenericAPIView):
-    queryset = JobTypeModel.objects.all()
-    serializer_class = peshajibi_serializers.JobTypeSerializer
-    pagination_class = StandardResultsSetPagination
+# class JobTypeListAPI(mixins.ListModelMixin, generics.GenericAPIView):
+#     queryset = JobTypeModel.objects.all()
+#     serializer_class = peshajibi_serializers.JobTypeSerializer
+#     pagination_class = StandardResultsSetPagination
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-
-class AdsListAPI(mixins.ListModelMixin, generics.GenericAPIView):
-    queryset = AdsServicesModel.objects.all()
-    serializer_class = peshajibi_serializers.AdsSerializer
-    pagination_class = StandardResultsSetPagination
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
 
 
-class AdsCreateAPI(generics.CreateAPIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAdminUser]
+# class AdsListAPI(mixins.ListModelMixin, generics.GenericAPIView):
+#     queryset = AdsServicesModel.objects.all()
+#     serializer_class = peshajibi_serializers.AdsSerializer
+#     pagination_class = StandardResultsSetPagination
 
-    ads_service_type_serializer = {
-        'transport': peshajibi_serializers.TransportAdsCreateSerializer,
-        'generic': peshajibi_serializers.GenericAdsSerializer,
-    }
-
-    def post(self, request, format=None):
-        """ """
-        service_type_serializer = peshajibi_serializers.AdsServiceTypeSerializer(data=request.POST)
-        if not service_type_serializer.is_valid():
-            response = {'status': 'failed', 'error': service_type_serializer.errors}
-            return Response(response)
-
-        service_type = service_type_serializer.validated_data['service_type']
-        serializer_class = self.ads_service_type_serializer.get(service_type)
-        if not serializer_class:
-            response = {'status': 'failed', 'error': 'wrong transport type. options: transport, generic'}
-            return Response(response)
-
-        serializer = serializer_class(data=request.POST)
-
-        if serializer.is_valid():
-            # serializer.save()
-            # add logic for adding this object to base ads service object
-            response = {'status': 'success'}
-        else:
-            response = {'status': 'failed', 'error': serializer.errors}
-
-        return Response(response)
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
 
 
-class AdsRetrieveDestroyAPI(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
-    queryset = AdsServicesModel.objects.all()
-    serializer_class = peshajibi_serializers.AdsSerializer
+# class AdsCreateAPI(generics.CreateAPIView):
+#     # authentication_classes = [TokenAuthentication]
+#     # permission_classes = [IsAdminUser]
 
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+#     ads_service_type_serializer = {
+#         'transport': peshajibi_serializers.TransportAdsCreateSerializer,
+#         'generic': peshajibi_serializers.GenericAdsSerializer,
+#     }
 
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+#     def post(self, request, format=None):
+#         """ """
+#         service_type_serializer = peshajibi_serializers.AdsServiceTypeSerializer(data=request.POST)
+#         if not service_type_serializer.is_valid():
+#             response = {'status': 'failed', 'error': service_type_serializer.errors}
+#             return Response(response)
 
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        self.perform_destroy(instance)
-        response = {'status': 'success'}
-        return Response(response, status=status.HTTP_204_NO_CONTENT)
+#         service_type = service_type_serializer.validated_data['service_type']
+#         serializer_class = self.ads_service_type_serializer.get(service_type)
+#         if not serializer_class:
+#             response = {'status': 'failed', 'error': 'wrong transport type. options: transport, generic'}
+#             return Response(response)
 
-    def perform_destroy(self, instance):
-        try:
-            instance.content_object.delete()
-        except:
-            pass
-        instance.delete()
+#         serializer = serializer_class(data=request.POST)
+
+#         if serializer.is_valid():
+#             # serializer.save()
+#             # add logic for adding this object to base ads service object
+#             response = {'status': 'success'}
+#         else:
+#             response = {'status': 'failed', 'error': serializer.errors}
+
+#         return Response(response)
+
+
+# class AdsRetrieveDestroyAPI(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+#     queryset = AdsServicesModel.objects.all()
+#     serializer_class = peshajibi_serializers.AdsSerializer
+
+#     def get(self, request, *args, **kwargs):
+#         return self.retrieve(request, *args, **kwargs)
+
+#     def delete(self, request, *args, **kwargs):
+#         return self.destroy(request, *args, **kwargs)
+
+#     def destroy(self, request, *args, **kwargs):
+#         instance = self.get_object()
+#         self.perform_destroy(instance)
+#         response = {'status': 'success'}
+#         return Response(response, status=status.HTTP_204_NO_CONTENT)
+
+#     def perform_destroy(self, instance):
+#         try:
+#             instance.content_object.delete()
+#         except:
+#             pass
+#         instance.delete()
 
 
 class AdsServiceSchemaListAPI(generics.ListAPIView):

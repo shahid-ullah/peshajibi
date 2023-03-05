@@ -57,29 +57,29 @@ class ProfessionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class JobTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = peshajibi_models.JobTypeModel
-        fields = '__all__'
+# class JobTypeSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = peshajibi_models.JobTypeModel
+#         fields = '__all__'
 
 
-class GenericAdsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = peshajibi_models.GenericAdsServiceModel
-        fields = '__all__'
+# class GenericAdsSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = peshajibi_models.GenericAdsServiceModel
+#         fields = '__all__'
 
 
-class TransportAdsSerializer(serializers.ModelSerializer):
-    from_division = DivisionSerializer()
-    to_division = DivisionSerializer()
-    from_district = DistrictSerializer()
-    to_district = DistrictSerializer()
-    from_upazila = UpazilaSerializer()
-    to_upazila = UpazilaSerializer()
+# class TransportAdsSerializer(serializers.ModelSerializer):
+#     from_division = DivisionSerializer()
+#     to_division = DivisionSerializer()
+#     from_district = DistrictSerializer()
+#     to_district = DistrictSerializer()
+#     from_upazila = UpazilaSerializer()
+#     to_upazila = UpazilaSerializer()
 
-    class Meta:
-        model = peshajibi_models.TransportAdsService
-        fields = '__all__'
+#     class Meta:
+#         model = peshajibi_models.TransportAdsService
+#         fields = '__all__'
 
 
 class ContentObjectRelatedField(serializers.RelatedField):
@@ -100,22 +100,22 @@ class ContentObjectRelatedField(serializers.RelatedField):
             return 'unknown'
 
 
-class AdsSerializer(serializers.ModelSerializer):
-    content_object = ContentObjectRelatedField(read_only=True)
+# class AdsSerializer(serializers.ModelSerializer):
+#     content_object = ContentObjectRelatedField(read_only=True)
 
-    class Meta:
-        model = peshajibi_models.AdsServicesModel
-        fields = "__all__"
-
-
-class TransportAdsCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = peshajibi_models.TransportAdsService
-        fields = '__all__'
+#     class Meta:
+#         model = peshajibi_models.AdsServicesModel
+#         fields = "__all__"
 
 
-class AdsServiceTypeSerializer(serializers.Serializer):
-    service_type = serializers.CharField(max_length=50)
+# class TransportAdsCreateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = peshajibi_models.TransportAdsService
+#         fields = '__all__'
+
+
+# class AdsServiceTypeSerializer(serializers.Serializer):
+#     service_type = serializers.CharField(max_length=50)
 
 
 # Start update profile API serializers
