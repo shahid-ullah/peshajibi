@@ -18,4 +18,6 @@ urlpatterns = [
     # path('ads/<int:pk>/', apis.AdsRetrieveDestroyAPI.as_view(), name='ads_update_delete'),
     # path('ads/create/', apis.AdsCreateAPI.as_view(), name='ads_create'),
     path('ads_service_schemas/', apis.AdsServiceSchemaListAPI.as_view(), name='ads_service_schemas'),
+    path('ads/', apis.AdsListAPI.as_view(), name='ads'),
+    path('ads_create/', apis.AdsCreateAPI.as_view(), name='ads_create'),
 ]

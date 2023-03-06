@@ -4,13 +4,6 @@ from rest_framework import serializers
 
 from apps.peshajibi.models import OTPModel
 from apps.peshajibi.serializers import (
-    CityCorporationSerializer,
-    CityCorporationThanaSerializer,
-    DistrictSerializer,
-    DivisionSerializer,
-    ProfessionSerializer,
-    UnionSerializer,
-    UpazilaSerializer,
     UpdateProfileCityCorporationSerializer,
     UpdateProfileCityCorporationThanaSerializer,
     UpdateProfileDistrictSerializer,

@@ -1,14 +1,18 @@
+from copy import deepcopy
+from datetime import date, timedelta
+
 from django.contrib.auth import get_user_model
 from django.db.models.query import QuerySet
-from rest_framework import generics, mixins, status
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework import generics, mixins
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication, TokenAuthentication
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.core.utils import StandardResultsSetPagination
 from apps.peshajibi.models import (  # AdsServicesModel,; JobTypeModel,
+    Ads,
     AdsServiceTypeSchemaModel,
     CityCorporationModel,
     CityCorporationThanaModel,
@@ -19,7 +23,7 @@ from apps.peshajibi.models import (  # AdsServicesModel,; JobTypeModel,
     UnionModel,
     UpazilaModel,
 )
-from apps.users.models import AccountsModel, DivisionModel, UserTypeModel
+from apps.users.models import AccountsModel, BearerAuthentication, DivisionModel, UserTypeModel
 from apps.users.serializers import AccessOTPSerializer, UserSerializer
 
 from . import serializers as peshajibi_serializers
@@ -269,10 +273,10 @@ class AdsServiceSchemaListAPI(generics.ListAPIView):
         )
 
         queryset = self.queryset
-        service_id = self.request.GET.get('service_id')
+        service_level = self.request.GET.get('service_level')
         try:
-            if service_id:
-                queryset = queryset.filter(service_id=service_id)
+            if service_level:
+                queryset = queryset.filter(service_level=service_level)
         except:
             pass
         queryset = queryset.filter()
@@ -280,3 +284,62 @@ class AdsServiceSchemaListAPI(generics.ListAPIView):
             # Ensure queryset is re-evaluated on each request.
             queryset = queryset.all()
         return queryset
+
+
+class AdsListAPI(generics.ListAPIView):
+    pagination_class = StandardResultsSetPagination
+    # permission_classes = [IsAuthenticated]
+    queryset = Ads.objects.all()
+    serializer_class = peshajibi_serializers.AdsListSerializer
+
+
+class AdsCreateAPI(generics.CreateAPIView):
+    authentication_classes = [BearerAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        """ """
+        data = deepcopy(request.data)
+        data['user'] = request.user.id
+        try:
+            data['profession'] = request.user.city_profile.profession.id
+        except:
+            return Response({'status': 'Failed', 'errors': ['user"s must have profession id']})
+
+        # ads_type_level = request.POST.get('ads_type_level', None)
+        # if not ads_type_level:
+        #     return Response({'status': 'Failed', 'errors': ['ads type level missing. e.g: ads_type_level: transport']})
+
+        transport_serializer_class = peshajibi_serializers.AdsCreateTransportSerializer
+        # generic_serializer_class = peshajibi_serializers.AdsCreateGenericSerializer
+        transport_serializer = transport_serializer_class(data=data)
+        # generic_serializer = generic_serializer_class(data=data)
+
+        # error_count = 0
+        if transport_serializer.is_valid():
+            model_obj = transport_serializer.save()
+            try:
+                notice_period_days = int(model_obj.notice_period_days)
+                model_obj.expire_date = date.today() + timedelta(days=notice_period_days)
+                model_obj.save()
+            except:
+                pass
+        else:
+            return Response({'status': 'Failed', 'errors': transport_serializer.errors})
+            # error_count = error_count + 1
+            # if generic_serializer.is_valid():
+            #     model_obj = generic_serializer.save()
+            #     try:
+            #         notice_period_days = int(model_obj.notice_period_days)
+            #         model_obj.expire_date = date.today() + timedelta(days=notice_period_days)
+            #         model_obj.save()
+            #     except:
+            #         pass
+            # else:
+            #     error_count = error_count + 1
+
+        # if error_count == 2:
+            # return Response({'status': 'Failed', 'errors': [transport_serializer.errors, generic_serializer.errors]})
+
+        sr = peshajibi_serializers.AdsListSerializer(model_obj)
+        return Response({'status': 'success', 'result': sr.data})

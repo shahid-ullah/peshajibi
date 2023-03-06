@@ -67,6 +67,13 @@ class UserDetailAPI(generics.RetrieveAPIView):
     queryset = User.objects.prefetch_related('guest_profile', 'city_profile', 'division_profile')
     serializer_class = UserSerializer
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        response_data = copy.deepcopy(serializer.data)
+        response_data['status'] = 'success'
+        return Response(response_data)
+
 
 class RegistrationAPI(APIView):
     """
