@@ -209,6 +209,7 @@ class ProfessionModel(models.Model):
 
 class AdsServiceTypeSchemaModel(models.Model):
     service_id = models.PositiveIntegerField(db_index=True)
+    service_level = models.CharField(max_length=100)
     key = models.CharField(max_length=50)
     level = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
@@ -221,7 +222,7 @@ class AdsServiceTypeSchemaModel(models.Model):
 
     class Meta:
         db_table = 'ads_service_type_schema'
-        ordering = ['id']
+        ordering = ['service_id']
 
 
 class Ads(models.Model):
