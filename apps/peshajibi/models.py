@@ -120,7 +120,7 @@ class ProfessionCatModel(models.Model):
 
     class Meta:
         db_table = "profession_category"
-        ordering = ['id']
+        # ordering = ['id']
 
     def __str__(self):
         return f'{self.name_bng} {self.name_eng}'
@@ -135,7 +135,7 @@ class ProfessionModel(models.Model):
 
     class Meta:
         db_table = "profession"
-        ordering = ['id']
+        # ordering = ['id']
 
     def __str__(self):
         return f'{self.name_bng} {self.name_eng}'

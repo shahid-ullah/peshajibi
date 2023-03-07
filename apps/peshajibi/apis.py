@@ -2,6 +2,7 @@ from copy import deepcopy
 from datetime import date, timedelta
 
 from django.contrib.auth import get_user_model
+from django.db.models.aggregates import Count
 from django.db.models.query import QuerySet
 from rest_framework import generics, mixins
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication, TokenAuthentication
@@ -164,16 +165,17 @@ class CityCorporationThanaListAPI(mixins.ListModelMixin, generics.GenericAPIView
 
 
 class ProfessionCategoryListAPI(mixins.ListModelMixin, generics.GenericAPIView):
-    queryset = ProfessionCatModel.objects.all()
+    queryset = ProfessionCatModel.objects.all().order_by('id')
     serializer_class = peshajibi_serializers.ProfessionCategorySerializer
     pagination_class = StandardResultsSetPagination
 
     def get(self, request, *args, **kwargs):
+        self.queryset = self.queryset.annotate(profession_count=Count('professionmodel'))
         return self.list(request, *args, **kwargs)
 
 
 class ProfessionListAPI(mixins.ListModelMixin, generics.GenericAPIView):
-    queryset = ProfessionModel.objects.all()
+    queryset = ProfessionModel.objects.all().order_by('id')
     serializer_class = peshajibi_serializers.ProfessionSerializer
     pagination_class = StandardResultsSetPagination
 
@@ -181,6 +183,7 @@ class ProfessionListAPI(mixins.ListModelMixin, generics.GenericAPIView):
         profession_cat_id = request.GET.get('profession_cat')
         if profession_cat_id:
             self.queryset = self.queryset.filter(profession_cat=profession_cat_id)
+        self.queryset = self.queryset.annotate(user_count=Count('citycorporationuserprofilemodel'))
         return self.list(request, *args, **kwargs)
 
 
@@ -339,7 +342,7 @@ class AdsCreateAPI(generics.CreateAPIView):
             #     error_count = error_count + 1
 
         # if error_count == 2:
-            # return Response({'status': 'Failed', 'errors': [transport_serializer.errors, generic_serializer.errors]})
+        # return Response({'status': 'Failed', 'errors': [transport_serializer.errors, generic_serializer.errors]})
 
         sr = peshajibi_serializers.AdsListSerializer(model_obj)
         return Response({'status': 'success', 'result': sr.data})

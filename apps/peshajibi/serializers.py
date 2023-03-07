@@ -51,15 +51,19 @@ class CityCorporationThanaSerializer(serializers.ModelSerializer):
 
 
 class ProfessionCategorySerializer(serializers.ModelSerializer):
+    profession_count = serializers.IntegerField()
+
     class Meta:
         model = peshajibi_models.ProfessionCatModel
-        fields = '__all__'
+        fields = ['id', 'name_eng', 'name_bng', 'profession_count', 'created_at', 'updated_at']
 
 
 class ProfessionSerializer(serializers.ModelSerializer):
+    user_count = serializers.IntegerField()
+
     class Meta:
         model = peshajibi_models.ProfessionModel
-        fields = '__all__'
+        fields = ['id', 'name_eng', 'name_bng', 'profession_cat', 'user_count', 'created_at', 'updated_at']
 
 
 class BasicProfessionSerializer(serializers.ModelSerializer):
