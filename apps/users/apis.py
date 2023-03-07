@@ -51,7 +51,7 @@ class UserListAPI(generics.ListAPIView):
 
         queryset = self.queryset
         queryset = queryset.filter(is_superuser=False)
-        queryset = queryset.filter(is_share_profile=True)
+        # queryset = queryset.filter(is_share_profile=True)
         profession_id = self.request.GET.get('profession')
         try:
             if profession_id:
