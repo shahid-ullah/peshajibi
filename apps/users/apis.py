@@ -4,6 +4,7 @@ import random
 import re
 
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 from django.db.models.query import QuerySet
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
@@ -49,6 +50,8 @@ class UserListAPI(generics.ListAPIView):
         )
 
         queryset = self.queryset
+        queryset = queryset.filter(is_superuser=False)
+        queryset = queryset.filter(is_share_profile=True)
         profession_id = self.request.GET.get('profession')
         try:
             if profession_id:
