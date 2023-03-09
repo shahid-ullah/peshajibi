@@ -55,7 +55,7 @@ class ProfessionCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = peshajibi_models.ProfessionCatModel
-        fields = ['id', 'name_eng', 'name_bng', 'profession_count', 'created_at', 'updated_at']
+        fields = ['id', 'name_eng', 'name_bng', 'icon', 'profession_count', 'created_at', 'updated_at']
 
 
 class ProfessionSerializer(serializers.ModelSerializer):
@@ -63,7 +63,7 @@ class ProfessionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = peshajibi_models.ProfessionModel
-        fields = ['id', 'name_eng', 'name_bng', 'profession_cat', 'user_count', 'created_at', 'updated_at']
+        fields = ['id', 'name_eng', 'name_bng', 'icon', 'profession_cat', 'user_count', 'created_at', 'updated_at']
 
 
 class BasicProfessionSerializer(serializers.ModelSerializer):

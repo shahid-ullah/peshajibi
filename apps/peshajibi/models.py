@@ -115,6 +115,7 @@ class CityCorporationThanaModel(models.Model):
 class ProfessionCatModel(models.Model):
     name_bng = models.CharField(max_length=100, blank=True, null=True)
     name_eng = models.CharField(max_length=100, blank=True, null=True)
+    icon = models.ImageField(upload_to='icons/profession_cat/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
 
@@ -129,6 +130,7 @@ class ProfessionCatModel(models.Model):
 class ProfessionModel(models.Model):
     name_bng = models.CharField(max_length=100, blank=True, null=True)
     name_eng = models.CharField(max_length=100, blank=True, null=True)
+    icon = models.ImageField(upload_to='icons/profession/', blank=True, null=True)
     profession_cat = models.ForeignKey(ProfessionCatModel, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
