@@ -269,6 +269,8 @@ class Ads(models.Model):
     is_negotiable = models.BooleanField(default=False)
     notice_period_days = models.CharField(max_length=2, blank=True, null=True)
     expire_date = models.DateField(blank=True, null=True)
+    service_provide_day = models.DateField(blank=True, null=True)
+    service_provide_time = models.TimeField(blank=True, null=True)
     cost = models.DecimalField(default=0, decimal_places=2, max_digits=50)
     description = models.TextField(blank=True, null=True)
     job_created_at = models.DateTimeField(auto_now_add=True, editable=False)

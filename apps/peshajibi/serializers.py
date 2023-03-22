@@ -260,6 +260,8 @@ class AdsCreateTransportSerializer(serializers.ModelSerializer):
             'cost',
             'is_negotiable',
             'description',
+            'service_provide_day',
+            'service_provide_time',
         ]
 
 
