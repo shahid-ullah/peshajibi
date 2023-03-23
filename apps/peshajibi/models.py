@@ -23,6 +23,9 @@ class OTPModel(models.Model):
     def __str__(self):
         return f'{self.mobile_number} {self.user_type}'
 
+    def mobile_number_with_country_code(self):
+        return self.mobile_number
+
 
 class DivisionModel(models.Model):
     name_bng = models.CharField(max_length=100, blank=True, null=True)

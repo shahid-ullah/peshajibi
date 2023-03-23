@@ -77,6 +77,12 @@ class AccountsModel(AbstractUser):
     def __str__(self):
         return f'{self.mobile}'
 
+    def mobile_number_with_country_code(self):
+        if self.mobile:
+            return '+88' + str(self.mobile)
+        else:
+            self.mobile
+
 
 class GuestUserProfileModel(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='guest_profile')

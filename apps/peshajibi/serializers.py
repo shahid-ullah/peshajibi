@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from apps.core.utils import normalize_mobile_number
+
 from . import models as peshajibi_models
 
 User = get_user_model()
@@ -12,6 +14,13 @@ class OTPModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = peshajibi_models.OTPModel
         fields = ['mobile_number', 'otp_number']
+
+    def validate_mobile_number(self, value):
+        print('validated mobile number called')
+        number = normalize_mobile_number(value)
+        if not number:
+            raise serializers.ValidationError("Mobile Number is not valid")
+        return number
 
 
 class DivisionSerializer(serializers.ModelSerializer):

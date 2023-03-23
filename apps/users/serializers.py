@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 
+from apps.core.utils import normalize_mobile_number
 from apps.peshajibi.models import OTPModel
 from apps.peshajibi.serializers import (
     UpdateProfileCityCorporationSerializer,
@@ -27,11 +28,25 @@ class RegistrationSerializer(serializers.ModelSerializer):
         model = OTPModel
         fields = ['mobile_number']
 
+    def validate_mobile_number(self, value):
+        print('validated mobile number called')
+        number = normalize_mobile_number(value)
+        if not number:
+            raise serializers.ValidationError("Mobile Number is not valid")
+        return number
+
 
 class AccessOTPSerializer(serializers.ModelSerializer):
     class Meta:
         model = OTPModel
         fields = ['mobile_number']
+
+    def validate_mobile_number(self, value):
+        print('validated mobile number called')
+        number = normalize_mobile_number(value)
+        if not number:
+            raise serializers.ValidationError("Mobile Number is not valid")
+        return number
 
 
 class GuestProfileSerializer(serializers.ModelSerializer):
@@ -72,6 +87,7 @@ class UserSerializer(serializers.ModelSerializer):
     guest_profile = GuestProfileSerializer()
     division_profile = DivisionProfileSerializer()
     city_profile = CityProfileSerializer()
+    mobile = serializers.CharField(source='mobile_number_with_country_code')
 
     class Meta:
         model = User

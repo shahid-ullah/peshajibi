@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.db.models.aggregates import Count
 from django.db.models.query import QuerySet
 from rest_framework import generics, mixins
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication, TokenAuthentication
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
@@ -43,7 +43,7 @@ class VerifyOTPAPI(APIView):
             mobile_number = serializer.validated_data.get('mobile_number')
             otp_number = serializer.validated_data.get('otp_number')
         else:
-            response = {'status': 'Invalid', 'error': serializer.errors}
+            response = {'status': 'failed', 'error': serializer.errors}
             return Response(response)
 
         otp_objects = OTPModel.objects.filter(mobile_number=mobile_number, otp_number=otp_number)
@@ -62,12 +62,12 @@ class VerifyOTPAPI(APIView):
                 pass
 
             response = {
-                'status': 'Valid',
+                'status': 'success',
                 'user_info': user_info,
                 'token': token,
             }
         else:
-            response = {'status': 'Invalid', 'error': 'No OTP found'}
+            response = {'status': 'failed', 'error': 'No OTP found'}
 
         return Response(response)
 

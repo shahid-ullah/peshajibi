@@ -100,8 +100,9 @@ class RegistrationAPI(APIView):
             except OTPModel.DoesNotExist:
                 otp_number = generate_otp()
                 OTPModel.objects.create(mobile_number=mobile_number, otp_number=otp_number)
+            mobile_number = '+88' + mobile_number
 
-            response = {'status': 'success'}
+            response = {'status': 'success', 'mobile_number': mobile_number}
             return Response(response)
         else:
             response = {'status': 'failed', 'error': serializer.errors}
