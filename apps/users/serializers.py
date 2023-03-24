@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 
-from apps.core.utils import normalize_mobile_number
+from apps.core.utils import normalize_mobile_number, valid_blood_groups
 from apps.peshajibi.models import OTPModel
 from apps.peshajibi.serializers import (
     UpdateProfileCityCorporationSerializer,
@@ -29,7 +29,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
         fields = ['mobile_number']
 
     def validate_mobile_number(self, value):
-        print('validated mobile number called')
         number = normalize_mobile_number(value)
         if not number:
             raise serializers.ValidationError("Mobile Number is not valid")
@@ -42,7 +41,6 @@ class AccessOTPSerializer(serializers.ModelSerializer):
         fields = ['mobile_number']
 
     def validate_mobile_number(self, value):
-        print('validated mobile number called')
         number = normalize_mobile_number(value)
         if not number:
             raise serializers.ValidationError("Mobile Number is not valid")
@@ -138,3 +136,13 @@ class AccountUpdateSerializer(serializers.ModelSerializer):
             'is_share_profile',
             'blood_group_eng',
         ]
+
+    def validate_blood_group_eng(self, value):
+        try:
+            value = str(value).strip().upper()
+            if value not in valid_blood_groups():
+                raise serializers.ValidationError("Blood group is not valid")
+        except:
+            raise serializers.ValidationError("Blood group is not valid")
+
+        return value

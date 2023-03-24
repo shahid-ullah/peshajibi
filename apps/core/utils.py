@@ -11,6 +11,10 @@ third_valid_digits = [3, 7, 6, 8, 4, 9, 5]
 valid_number_length = [11, 14]
 
 
+def valid_blood_groups():
+    return ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']
+
+
 class StandardResultsSetPagination(pagination.PageNumberPagination):
     page_size = 20
     page_size_query_param = 'page_size'

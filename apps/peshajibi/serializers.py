@@ -16,7 +16,6 @@ class OTPModelSerializer(serializers.ModelSerializer):
         fields = ['mobile_number', 'otp_number']
 
     def validate_mobile_number(self, value):
-        print('validated mobile number called')
         number = normalize_mobile_number(value)
         if not number:
             raise serializers.ValidationError("Mobile Number is not valid")
